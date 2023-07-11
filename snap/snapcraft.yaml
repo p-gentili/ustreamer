@@ -1,16 +1,29 @@
-name: my-snap-name # you probably want to 'snapcraft register <name>'
-version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
-summary: Single-line elevator pitch for your amazing snap # 79 char long summary
+name: ustreamer
+version: '5.41'
+summary: Lightweight and fast MJPEG-HTTP streamer
 description: |
-  This is my-snap's description. You have a paragraph or two to tell the
-  most important story about your snap. Keep it under 100 words though,
-  we live in tweetspace and your description wants to look good in the snap
-  store.
+  µStreamer is a lightweight and very quick server to stream MJPEG video from any V4L2 device to the net.
+  All new browsers have native support of this video format, as well as most video players such as mplayer, VLC etc.
+  µStreamer is a part of the PiKVM project designed to stream VGA and HDMI screencast hardware data with the highest
+  resolution and FPS possible.
 
 base: core22
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
 parts:
-  my-part:
-    # See 'snapcraft plugins'
-    plugin: nil
+  ustreamer:
+    source: https://github.com/pikvm/ustreamer.git
+    source-type: git
+    source-depth: 1
+    source-tag: v$SNAPCRAFT_PROJECT_VERSION
+    plugin: make
+    build-packages:
+      - build-essential
+    stage-packages:
+      - libjpeg-dev
+      - libbsd-dev
+      - libevent-dev
+
+apps:
+  ustreamer:
+    command: usr/local/bin/ustreamer
