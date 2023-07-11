@@ -1,10 +1,10 @@
 <h1 align="center">
   <img src="https://avatars.githubusercontent.com/u/41749659?s=200&v=4" alt="[µStreamer]">
   <br />
-  [µStreamer]
+  µStreamer
 </h1>
 
-<p align="center"><b>This is the snap for [µStreamer]</b>, <i>“Lightweight and fast MJPEG-HTTP streamer”</i>. It works on Ubuntu, Fedora, Debian, and other major Linux
+<p align="center"><b>This is the snap for µStreamer</b>, <i>“Lightweight and fast MJPEG-HTTP streamer”</i>. It works on Ubuntu, Fedora, Debian, and other major Linux
 distributions.</p>
 
 <!-- Uncomment and modify this when you are provided a build status badge
