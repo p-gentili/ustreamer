@@ -1,5 +1,5 @@
 name: ustreamer
-version: '5.41'
+adopt-info: ustreamer
 summary: Lightweight and fast MJPEG-HTTP streamer
 description: |
   µStreamer is a lightweight and very quick server to stream MJPEG video from any V4L2 device to the net.
@@ -15,7 +15,10 @@ parts:
     source: https://github.com/pikvm/ustreamer.git
     source-type: git
     source-depth: 1
-    source-tag: v$SNAPCRAFT_PROJECT_VERSION
+    source-tag: v5.41
+# ext:updatesnap
+#   format: "v%M.%m"
+# endext
     plugin: make
     build-packages:
       - build-essential
@@ -23,6 +26,9 @@ parts:
       - libjpeg-dev
       - libbsd-dev
       - libevent-dev
+    override-pull: |
+      craftctl default
+      craftctl set version=$(git describe --tags | sed 's/v//')
 
 apps:
   ustreamer:
