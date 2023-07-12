@@ -10,22 +10,89 @@ description: |
 base: core22
 confinement: strict
 
+assumes:
+  - command-chain
+
 parts:
+  config:
+    source: snap/local/janus-config
+    plugin: dump
+
+  janus:
+    source: https://github.com/meetecho/janus-gateway.git
+    source-type: git
+    source-depth: 1
+    source-tag: v1.1.4
+    plugin: autotools
+    autotools-configure-parameters: 
+      - --prefix=/opt/janus
+      - --disable-all-transports
+      - --disable-all-plugins
+      - --disable-all-handlers
+      - --enable-websockets
+
+    build-packages:
+      - libtool
+      - libmicrohttpd-dev
+      - libnice-dev
+      - libssl-dev
+      - libsrtp2-dev
+      - libsofia-sip-ua-dev
+      - libopus-dev
+      - libogg-dev
+      - liblua5.3-dev
+      - libglib2.0-dev
+      - libwebsockets-dev
+
+    stage-packages:
+      - libcurl4-openssl-dev
+      - libconfig-dev
+      - libjansson-dev
+      - libgssdp-1.2-0
+      - libgupnp-1.2-1
+      - libgupnp-igd-1.0-4
+      - libnice10
+      - libnspr4
+      - libnss3
+      - libsrtp2-1
+      - libwebsockets-dev
+
+    override-build: | 
+      craftctl default
+
+      # Making life easier for ustreamer (https://github.com/canonical/ustreamer/blob/master/docs/h264.md)
+      ln -sf $SNAPCRAFT_PART_INSTALL/opt/janus/include/janus $SNAPCRAFT_PART_INSTALL/usr/include/janus
+      sed --in-place --expression 's|^#include "refcount.h"$|#include "../refcount.h"|g' $SNAPCRAFT_PART_INSTALL/usr/include/janus/plugins/plugin.h
+
   ustreamer:
     source: https://github.com/pikvm/ustreamer.git
     source-type: git
     source-depth: 1
     source-tag: v5.41
+    after:
+      - janus
     plugin: make
+    make-parameters:
+      - WITH_JANUS=1
     build-packages:
       - build-essential
     stage-packages:
+      - libevent-dev
       - libjpeg-dev
       - libbsd-dev
-      - libevent-dev
+      - libasound2-dev
+      - libspeex-dev
+      - libspeexdsp-dev
+      - libopus-dev
+
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags | sed 's/v//')
+
+    override-build: |
+      craftctl default
+      mkdir -p $SNAPCRAFT_PART_INSTALL/opt/janus/lib/janus/plugins
+      mv janus/libjanus_ustreamer.so $SNAPCRAFT_PART_INSTALL/opt/janus/lib/janus/plugins/
 
 apps:
   ustreamer:
@@ -33,3 +100,9 @@ apps:
     plugs:
       - network-bind
       - camera
+  janus:
+    command: opt/janus/bin/janus --configs-folder $SNAP_USER_COMMON/janus/configs --plugins-folder $SNAP/opt/janus/lib/janus/plugins
+    command-chain:
+      - setup-janus-ustreamer-cfg.sh
+    plugs:
+      - network-bind
