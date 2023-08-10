@@ -12,6 +12,9 @@ confinement: strict
 
 parts:
   ustreamer:
+# ext:updatesnap
+#   version-format: "v%M.%m"
+# endext
     source: https://github.com/pikvm/ustreamer.git
     source-type: git
     source-depth: 1
