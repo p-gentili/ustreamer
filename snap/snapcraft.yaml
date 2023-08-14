@@ -1,4 +1,5 @@
 name: ustreamer
+license: GPL-3.0
 adopt-info: ustreamer
 summary: Lightweight and fast MJPEG-HTTP streamer
 description: |
