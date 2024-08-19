@@ -25,6 +25,7 @@ parts:
     plugin: make
     build-packages:
       - build-essential
+      - pkg-config
     stage-packages:
       - libjpeg-dev
       - libbsd-dev
