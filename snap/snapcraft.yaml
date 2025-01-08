@@ -9,7 +9,7 @@ description: |
   resolution and FPS possible.
 contact: https://github.com/p-gentili/ustreamer
 
-base: core22
+base: core24
 confinement: strict
 
 parts:
