@@ -9,7 +9,7 @@ description: |
   resolution and FPS possible.
 contact: https://github.com/p-gentili/ustreamer
 
-base: core22
+base: core24
 confinement: strict
 
 parts:
@@ -26,10 +26,14 @@ parts:
     build-packages:
       - build-essential
       - pkg-config
-    stage-packages:
       - libjpeg-dev
       - libbsd-dev
       - libevent-dev
+    stage-packages:
+      - libjpeg8
+      - libbsd0
+      - libevent-2.1-7t64
+      - libevent-pthreads-2.1-7t64
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags | sed 's/v//')
