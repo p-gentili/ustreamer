@@ -21,7 +21,7 @@ parts:
     source: https://github.com/pikvm/ustreamer.git
     source-type: git
     source-depth: 1
-    source-tag: 'v6.46'
+    source-tag: 'v6.47'
     plugin: make
     build-packages:
       - build-essential
